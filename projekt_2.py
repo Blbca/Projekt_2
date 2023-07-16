@@ -25,8 +25,7 @@ def hlavni():
         vyhodnoceni(uzivatel_cislo, hadane_cislo) 
         print(f"{oddelovac}")
         pokusu = pocitani_pokusu(uzivatel_cislo, hadane_cislo, pokusu)
-        print(f"{oddelovac}")
-        print(hadane_cislo)
+        #print(hadane_cislo) jen pro rychlejsi kontrolu
 
 def intro() -> None: 
     """
