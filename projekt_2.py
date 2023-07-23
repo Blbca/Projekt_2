@@ -10,51 +10,64 @@ discord: Goodchilde#1716
 
 import random
 
+oddelovac = 65 * "-"
 
-oddelovac = "-----------------------------------------------"
 def hlavni():
     
     """
     Hlavní fce, která obsahuje všechny dílčí fce.
     """
+
     pokusu = 0
     intro()
-    hadane_cislo = had_cislo()
+    hadane_cislo = cislo_vygenerovane()
     while True:
         uzivatel_cislo = cislo_uzivatel()
         vyhodnoceni(uzivatel_cislo, hadane_cislo) 
-        print(f"{oddelovac}")
-        pokusu = pocitani_pokusu(uzivatel_cislo, hadane_cislo, pokusu)
-        #print(hadane_cislo) jen pro rychlejsi kontrolu
+        print(oddelovac)
+        pokusu = pocitani_pokusu(uzivatel_cislo, hadane_cislo, pokusu) # Zde si do promněné "pokusu" uložím počet pokusu a ten posílam zpátky do fce, aby se počet buď zvýšil a nebo pomocí printu zobrazil konečný počet pokusů
+        # print pro rychlejsí kontrolu:
+        #print(hadane_cislo)
 
 def intro() -> None: 
     """
     Tato fce má za úkol uvítat Vás u hry Cow and Bulls a
     představit Vám pravidla.
     """
-    print(f"{oddelovac}")
+
+    print(oddelovac)
     print("Ahoj! Vítám Vás u hry Cows and Bulls!")
-    print(f"{oddelovac}")
-    
-    print("Pravidla: Hráč 1 a hráč 2, reprezentovaní X a O, se střídají"
-          "v označení políček v mřížce 3*3. Vyhrává hráč, kterému se podaří umístit "
-          "tři své značky do vodorovné, svislé nebo diagonální řady.")
-    print(f"{oddelovac}")
+    print(oddelovac)
+    print("""Pravidla: Program vygeneruje 4 místné tajné číslo, které se bude
+skladat ze 4 různých čísel a nebude začínat 0. Poté se hráč snaží 
+toto číslo uhodnout. Pokud jsou odpovídající číslice na svých 
+správných pozicích, jsou to „bulls", pokud jsou na různých pozicích, 
+jsou to „cows“.""")
+    print(oddelovac)
     input("Zmáčkni 'Enter' pro pokračování.")
 
 
-def had_cislo() -> list:
+def cislo_vygenerovane() -> list:
     """
     Tato fce má za úkol vrátit čtyřmístné číslo, 
     které musíte uhádnout 
     Příklad: 1234
     """
 
-    seznam = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    hadane_cislo = random.sample(seznam, 4)
-    if hadane_cislo[0] == "0":
-        hadane_cislo.reverse()
-    return hadane_cislo
+    while True:
+        hadane_cislo = []
+        cislo = str(random.randint(1000,9999))
+        for c in cislo:
+            if c not in hadane_cislo:
+                hadane_cislo.append(c)
+            else:
+                continue
+
+        if len(hadane_cislo) == 4:
+            False
+            return hadane_cislo
+        else:
+            continue
 
 def cislo_uzivatel() -> list:
     """
@@ -64,26 +77,25 @@ def cislo_uzivatel() -> list:
     Pokud zadaná hodnota bude obsahovat dvakrát stejné číslo vyskočí 
     chybová hláška.
     """
-    uzivatel_cislo = []
+    
     while True:
-        print(f"{oddelovac}")
-        vstup=input("Zadejte čtyřmístné číslo: ")
+        uzivatel_cislo = []
+        print(oddelovac)
+        vstup = input("Zadejte čtyřmístné číslo: ")
         if vstup.isnumeric() and len(vstup) == 4 and vstup[0] != "0":
-            int(vstup)
             for i in vstup:
                 if i not in uzivatel_cislo:
                     uzivatel_cislo.append(i)
                 else:
                     print("Vaše číslo obsahuje více stejných čísel")
-                    uzivatel_cislo= [] 
+                    break
         else:
             print("Vaše číslo obsahuje nepovolená znaky a nebo 0 nazačátku")
-            uzivatel_cislo= []
         if len(uzivatel_cislo) == 4:
             False
             return uzivatel_cislo
         else:
-            uzivatel_cislo= []
+            continue
 
 def vyhodnoceni(hracuv_typ: list, cil: list) -> None:
     """
@@ -91,8 +103,9 @@ def vyhodnoceni(hracuv_typ: list, cil: list) -> None:
     Číslo, které vychází z fce 'had_cislo'(hádané číslo) s číslem,
     které vychází z fce 'cislo_uzivatel'. 
     """
+
     if hracuv_typ == cil:
-        print(f"{oddelovac}")
+        print(oddelovac)
         print("Výborně vyhral jste")  
     else:
         bulls = 0
@@ -102,10 +115,16 @@ def vyhodnoceni(hracuv_typ: list, cil: list) -> None:
                 bulls += 1
             elif hracuv_typ[i] in cil:
                 cows += 1
-        print("Bulls: ",bulls)
-        print("Cows: ",cows)
+        if bulls == 1:
+            print("Bull: ",bulls)
+        else:
+            print("Bulls: ",bulls)
+        if cows == 1:
+            print("Cow: ",cows)
+        else:
+            print("Cows: ",cows)
 
-def pocitani_pokusu(hracuv_typ: list, cil: list, pokusu: int) -> None:
+def pocitani_pokusu(hracuv_typ: list, cil: list, pokusu: int) -> int:
     """
     Tato fce slouží k počítání pokusu, 
     kterých bylo potřeba k dohrání hry. 
@@ -119,9 +138,6 @@ def pocitani_pokusu(hracuv_typ: list, cil: list, pokusu: int) -> None:
         pokusu += 1
         print(f"K uhádnutí jste potřeboval: {pokusu} pokusů")
         quit()
-
-        
-    
 
 if __name__ == "__main__":
     hlavni()   
